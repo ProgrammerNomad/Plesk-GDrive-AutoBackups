@@ -4,7 +4,7 @@
   <version>1.0.0</version>
   <description>Automatically back up your Plesk server data to Google Drive.</description>
   <vendor>Nomad Programmer</vendor>
-  <packager>Nomad Programmer</packager> 
+  <packager>Nomad Programmer</packager>
   <homepage>https://github.com/ProgrammerNomad/Plesk-GDrive-AutoBackups</homepage>
 
   <interface>
@@ -14,5 +14,11 @@
 
   <dependencies>
     <plesk-version>18.0.0</plesk-version>
+    <composer-support>true</composer-support> 
   </dependencies>
+
+  <config>
+    <vendor-dir>src/plib/vendor</vendor-dir> 
+  </config>
+
 </extension>
