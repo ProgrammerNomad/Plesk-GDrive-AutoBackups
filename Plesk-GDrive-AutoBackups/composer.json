@@ -1,14 +1,14 @@
 {
     "require": {
       "google/apiclient": "^2.0",
-      "plesk-sdk": "^1.0"
+      "plesk/api-php-lib": "^2.1"
     },
     "config": {
       "vendor-dir": "plib/vendor"
     },
     "autoload": {
       "psr-4": {
-        "PleskExt\\GDriveAutoBackups\\": "plib/library/" 
+        "PleskExt\\GDriveAutoBackups\\": "plib/library/"
       }
     }
   }
