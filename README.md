@@ -22,10 +22,9 @@ This Plesk extension simplifies server management by automating backups to your 
      * In Plesk, go to **Extensions**.
      * Search for "Panel.ini Editor" and install the extension.
    * **Configure panel.ini:**
-     * Go to **Extensions** > **My Extensions** > **Panel.ini Editor** > **Open**.
-     * Select the `extensionUpload = on` setting under the `[ext-catalog]` section.
-     * Click **Copy settings**.
-     * Go to the "Editor" tab and click **Paste settings**.
+     * Go to **Extensions** > **My Extensions** > **Panel.ini Editor** > **Open** >> **Editor**.
+     * and past this at the end of file: '[ext-catalog]
+extensionUpload = true'
      * Click **Save** to save the changes to `panel.ini`.
 3. In Plesk, navigate to **Extensions** > **My Extensions**.
 4. Click the **Upload Extension** button and upload the package downloaded in step 1.
