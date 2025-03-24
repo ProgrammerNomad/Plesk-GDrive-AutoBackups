@@ -1,24 +1,55 @@
-<extension>
-  <id>plesk-gdrive-autobackups</id>
-  <name>Plesk GDrive AutoBackups</name>
-  <version>1.0.0</version>
-  <description>Automatically back up your Plesk server data to Google Drive.</description>
-  <vendor>Nomad Programmer</vendor>
-  <packager>Nomad Programmer</packager>
-  <homepage>https://github.com/ProgrammerNomad/Plesk-GDrive-AutoBackups</homepage>
-
-  <interface>
-    <main>htdocs/index.php</main>
-    <remote-storage-settings>htdocs/index.php</remote-storage-settings>
-  </interface>
-
-  <dependencies>
-    <plesk-version>18.0.0</plesk-version>
-    <composer-support>true</composer-support> 
-  </dependencies>
-
-  <config>
-    <vendor-dir>src/plib/vendor</vendor-dir> 
-  </config>
-
-</extension>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- filepath: c:\xampp\htdocs\Plesk-GDrive-AutoBackups\meta.xml -->
+<module>
+    <id>plesk-gdrive-autobackups</id>
+    <name>GDrive AutoBackups</name>
+    <description>Automatically back up your Plesk server data to Google Drive</description>
+    <version>1.0.0</version>
+    <release>1</release>
+    <vendor>ProgrammerNomad</vendor>
+    <url>https://github.com/ProgrammerNomad/Plesk-GDrive-AutoBackups</url>
+    <plesk_min_version>18.0.0</plesk_min_version>
+    
+    <!-- This section is crucial for sidebar integration -->
+    <category>backup</category>
+    
+    <!-- UI configuration -->
+    <ui>
+        <!-- Register the extension in navigation menus -->
+        <navigation>
+            <!-- In Admin Panel -->
+            <admin>
+                <title>GDrive AutoBackups</title>
+                <description>Configure Google Drive automatic backups</description>
+                <url>index.php</url>
+                <icon>icon.png</icon>
+            </admin>
+        </navigation>
+    </ui>
+    
+    <!-- CLI commands -->
+    <cli>
+        <commands>
+            <command required="false">
+                <path>plib/scripts/backup.php</path>
+            </command>
+        </commands>
+    </cli>
+    
+    <!-- Required permissions -->
+    <permissions>
+        <permission name="pm_Backup" />
+        <permission name="pm_Scheduler" />
+    </permissions>
+    
+    <!-- Required PHP version and extensions -->
+    <requirements>
+        <php>
+            <min_version>7.3.0</min_version>
+            <extensions>
+                <ext name="json" />
+                <ext name="curl" />
+            </extensions>
+        </php>
+    </requirements>
+</module>
