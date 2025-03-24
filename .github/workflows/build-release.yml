@@ -6,6 +6,10 @@ on:
       - 'v*.*.*'  # Run workflow on version tags, e.g. v1.0.0
   workflow_dispatch:  # Allow manual triggering
 
+# Add this permissions section
+permissions:
+  contents: write
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -125,3 +129,4 @@ jobs:
           draft: false
           prerelease: false
           generate_release_notes: true
+          token: ${{ secrets.RELEASE_TOKEN }}  # Use your PAT
