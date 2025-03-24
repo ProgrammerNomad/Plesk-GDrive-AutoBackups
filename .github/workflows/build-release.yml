@@ -1,0 +1,84 @@
+name: Build Plesk Extension Package
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Run workflow on version tags, e.g. v1.0.0
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: dom, curl, json, zip
+          tools: composer:v2
+          
+      - name: Get version from tag
+        id: get_version
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          else
+            echo "VERSION=dev-build-$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Display build information
+        run: |
+          echo "Building Plesk GDrive AutoBackups Extension"
+          echo "Version: ${{ steps.get_version.outputs.VERSION }}"
+          
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-dev --optimize-autoloader
+          
+      - name: Make scripts executable
+        run: |
+          chmod +x plib/scripts/backup.php
+          
+      - name: Create directory structure
+        run: |
+          mkdir -p build/plesk-gdrive-autobackups
+          
+      - name: Copy files to build directory
+        run: |
+          # Core files and directories
+          cp -r htdocs build/plesk-gdrive-autobackups/
+          cp -r plib build/plesk-gdrive-autobackups/
+          cp meta.xml build/plesk-gdrive-autobackups/
+          cp LICENSE build/plesk-gdrive-autobackups/ || echo "LICENSE file not found, skipping"
+          
+          # Ensure we don't include development files in the build
+          rm -rf build/plesk-gdrive-autobackups/plib/vendor/*/tests
+          rm -rf build/plesk-gdrive-autobackups/plib/vendor/*/docs
+          rm -rf build/plesk-gdrive-autobackups/plib/vendor/*/examples
+          
+      - name: Create ZIP package
+        run: |
+          cd build
+          zip -r plesk-gdrive-autobackups-${{ steps.get_version.outputs.VERSION }}.zip plesk-gdrive-autobackups
+          echo "Package created at build/plesk-gdrive-autobackups-${{ steps.get_version.outputs.VERSION }}.zip"
+          
+      - name: Upload extension as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: plesk-gdrive-autobackups-${{ steps.get_version.outputs.VERSION }}
+          path: build/plesk-gdrive-autobackups-${{ steps.get_version.outputs.VERSION }}.zip
+          
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/plesk-gdrive-autobackups-${{ steps.get_version.outputs.VERSION }}.zip
+          name: Release ${{ steps.get_version.outputs.VERSION }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
