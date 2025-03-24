@@ -128,8 +128,12 @@ class BackupController
                 $this->logBackupEvent("Backing up directory: {$dir}");
                 $tarFile = "{$tempDir}/" . basename($dir) . ".tar.gz";
                 
-                // Create tar.gz archive
-                exec("tar -czf {$tarFile} -C " . dirname($dir) . " " . basename($dir), $output, $returnVar);
+                // Use escapeshellarg to prevent command injection
+                $srcDir = escapeshellarg(dirname($dir));
+                $srcBase = escapeshellarg(basename($dir));
+                $tarFile = escapeshellarg($tarFile);
+
+                exec("tar -czf {$tarFile} -C {$srcDir} {$srcBase}", $output, $returnVar);
                 
                 if ($returnVar !== 0) {
                     throw new \Exception("Failed to create backup archive for {$dir}");
@@ -171,18 +175,56 @@ class BackupController
             'parents' => [$folderId]
         ]);
         
-        // Upload file
-        $content = file_get_contents($filePath);
-        $file = $driveService->files->create($fileMetadata, [
-            'data' => $content,
-            'mimeType' => 'application/gzip',
-            'uploadType' => 'multipart',
-            'fields' => 'id'
-        ]);
-        
-        $this->logBackupEvent("Uploaded file: {$fileName} with ID: {$file->id}");
-        
-        return $file->id;
+        // For larger files, use chunked upload instead of loading entire file into memory
+        if (filesize($filePath) > 10 * 1024 * 1024) { // If file is larger than 10MB
+            $this->logBackupEvent("Large file detected, using chunked upload for: {$fileName}");
+            
+            // Use resumable upload
+            $client = $driveService->getClient();
+            $client->setDefer(true);
+            
+            $request = $driveService->files->create($fileMetadata);
+            $media = new \Google\Http\MediaFileUpload(
+                $client,
+                $request,
+                'application/gzip',
+                null,
+                true, // Enable resumable uploads
+                1024 * 1024 // Chunk size in bytes (1MB)
+            );
+            $media->setFileSize(filesize($filePath));
+            
+            // Upload the file in chunks
+            $status = false;
+            $handle = fopen($filePath, "rb");
+            while (!$status && !feof($handle)) {
+                $chunk = fread($handle, 1024 * 1024);
+                $status = $media->nextChunk($chunk);
+            }
+            fclose($handle);
+            
+            $client->setDefer(false);
+            
+            if ($status) {
+                $fileId = $status->getId();
+                $this->logBackupEvent("Uploaded large file: {$fileName} with ID: {$fileId}");
+                return $fileId;
+            }
+            
+            throw new \Exception("Failed to upload large file: {$fileName}");
+        } else {
+            // Original code for smaller files
+            $content = file_get_contents($filePath);
+            $file = $driveService->files->create($fileMetadata, [
+                'data' => $content,
+                'mimeType' => 'application/gzip',
+                'uploadType' => 'multipart',
+                'fields' => 'id'
+            ]);
+            
+            $this->logBackupEvent("Uploaded file: {$fileName} with ID: {$file->id}");
+            return $file->id;
+        }
     }
     
     /**
