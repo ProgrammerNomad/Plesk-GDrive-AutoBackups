@@ -79,6 +79,32 @@ jobs:
           cp meta.xml build/plesk-gdrive-autobackups/
           cp LICENSE build/plesk-gdrive-autobackups/ || echo "LICENSE file not found, skipping"
           
+          # Copy icon file
+          if [ -f "icon.png" ]; then
+            cp icon.png build/plesk-gdrive-autobackups/
+            echo "Copied icon.png"
+          else
+            echo "WARNING: icon.png not found in the root directory!"
+            echo "Your extension will not display properly in Plesk without an icon."
+            
+            # Install ImageMagick if it's not available
+            which convert >/dev/null || apt-get update && apt-get install -y imagemagick
+            
+            # Create a simple placeholder icon
+            convert -size 32x32 xc:white -fill blue -draw "circle 16,16 16,1" \
+                    -pointsize 20 -fill white -gravity center -annotate 0 "G" \
+                    build/plesk-gdrive-autobackups/icon.png || echo "Failed to create placeholder icon"
+          fi
+          
+          # Copy screenshots directory
+          if [ -d "screenshots" ]; then
+            cp -r screenshots build/plesk-gdrive-autobackups/
+            echo "Copied screenshots directory"
+          else
+            mkdir -p build/plesk-gdrive-autobackups/screenshots
+            echo "Created empty screenshots directory"
+          fi
+          
           # Copy subdirectories that might exist in the nested structure
           if [ -d "Plesk-GDrive-AutoBackups/htdocs" ]; then
             cp -r Plesk-GDrive-AutoBackups/htdocs/* build/plesk-gdrive-autobackups/htdocs/

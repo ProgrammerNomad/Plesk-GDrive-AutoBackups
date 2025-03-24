@@ -3,14 +3,63 @@
 <module>
     <id>plesk-gdrive-autobackups</id>
     <name>GDrive AutoBackups</name>
-    <description>Automatically back up your Plesk server data to Google Drive</description>
+    <description>Automatically back up your Plesk server data to Google Drive. This extension provides a secure, automated solution for backing up your websites, databases, and email to your Google Drive account.</description>
     <version>1.0.0</version>
     <release>1</release>
     <vendor>ProgrammerNomad</vendor>
     <url>https://github.com/ProgrammerNomad/Plesk-GDrive-AutoBackups</url>
     <plesk_min_version>18.0.0</plesk_min_version>
     
-    <!-- This section is crucial for sidebar integration -->
+    <!-- Long description for catalog -->
+    <long-description>
+        <![CDATA[
+        <h2>Secure Your Plesk Server Data in Google Drive</h2>
+        
+        <p>GDrive AutoBackups provides a seamless way to automatically back up your Plesk server data directly to Google Drive. With simple setup and flexible configuration options, you can ensure your websites, databases, and email are protected in the cloud.</p>
+        
+        <h3>Key Features</h3>
+        <ul>
+            <li><strong>Simple OAuth Integration</strong> - Secure connection to your Google Drive</li>
+            <li><strong>Scheduled Backups</strong> - Configure daily, weekly, or monthly backup schedules</li>
+            <li><strong>Selective Backups</strong> - Choose specific directories and databases to back up</li>
+            <li><strong>Retention Policies</strong> - Automatically manage backup history and free up space</li>
+            <li><strong>Manual Backups</strong> - Run on-demand backups with a single click</li>
+            <li><strong>Comprehensive Logs</strong> - Detailed activity tracking and error reporting</li>
+            <li><strong>Secure Authentication</strong> - OAuth 2.0 for secure Google Drive access</li>
+        </ul>
+        
+        <h3>Easy Setup Process</h3>
+        <ol>
+            <li>Create your Google Cloud Project and enable the Drive API</li>
+            <li>Enter your Google API credentials</li>
+            <li>Connect to your Google Drive account</li>
+            <li>Select directories to back up</li>
+            <li>Set your backup schedule and retention policy</li>
+        </ol>
+        
+        <p>GDrive AutoBackups brings enterprise-level backup capabilities to your Plesk server without the complexity or cost.</p>
+        ]]>
+    </long-description>
+    
+    <!-- Screenshots for catalog -->
+    <screenshots>
+        <screenshot>screenshots/screenshot-1-dashboard.png</screenshot>
+        <screenshot>screenshots/screenshot-2-configuration.png</screenshot>
+        <screenshot>screenshots/screenshot-3-backup-logs.png</screenshot>
+        <screenshot>screenshots/screenshot-4-google-drive.png</screenshot>
+    </screenshots>
+    
+    <!-- Add features list for catalog -->
+    <features>
+        <feature>OAuth 2.0 Google Drive integration</feature>
+        <feature>Automatic scheduled backups</feature>
+        <feature>Selective directory backups</feature>
+        <feature>Backup history management</feature>
+        <feature>Detailed backup logs</feature>
+        <feature>Manual backup option</feature>
+    </features>
+    
+    <!-- Category for navigation -->
     <category>backup</category>
     
     <!-- UI configuration -->
@@ -25,6 +74,14 @@
                 <icon>icon.png</icon>
             </admin>
         </navigation>
+        
+        <!-- Add Remote Storage integration -->
+        <remote-storage>
+            <title>Google Drive</title>
+            <description>Back up to Google Drive</description>
+            <url>index.php</url>
+            <icon>icon.png</icon>
+        </remote-storage>
     </ui>
     
     <!-- CLI commands -->
