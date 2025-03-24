@@ -1,14 +1,17 @@
 {
-    "require": {
-      "google/apiclient": "^2.18",
-      "plesk/api-php-lib": "^2.1"
-    },
-    "config": {
-      "vendor-dir": "plib/vendor"
-    },
-    "autoload": {
-      "psr-4": {
-        "PleskExt\\GDriveAutoBackups\\": "plib/library/"
-      }
+  "name": "plesk/gdrive-autobackups",
+  "description": "Automatically back up your Plesk server data to Google Drive",
+  "require": {
+    "php": ">=7.3.0",
+    "google/apiclient": "^2.12.1",
+    "plesk/api-php-lib": "^2.1"
+  },
+  "config": {
+    "vendor-dir": "plib/vendor"
+  },
+  "autoload": {
+    "psr-4": {
+      "PleskExt\\GDriveAutoBackups\\": "plib/library/"
     }
   }
+}
