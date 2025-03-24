@@ -1,13 +1,18 @@
 <?php
 namespace PleskExt\GDriveAutoBackups;
 
+// Ensure we're using the proper Plesk namespace
+use pm_Settings;
+use pm_Context;
+
 class ApiController
 {
     private $pm; // Plesk PM_Settings instance
     
     public function __construct()
     {
-        $this->pm = new \pm_Settings();
+        // Correct way to instantiate PM_Settings
+        $this->pm = new pm_Settings();
     }
     
     /**
@@ -59,7 +64,7 @@ class ApiController
     }
     
     /**
-     * Create Google API client instance
+     * Create Google Client instance
      */
     public function createGoogleClient()
     {
@@ -72,20 +77,28 @@ class ApiController
         $client = new \Google\Client();
         $client->setClientId($credentials['clientId']);
         $client->setClientSecret($credentials['clientSecret']);
-        $client->setRedirectUri($credentials['redirectUri']);
-        $client->setAccessType('offline');
-        $client->setPrompt('select_account consent');
-        $client->setScopes([\Google\Service\Drive::DRIVE]);
         
-        // Load previously authorized token, if it exists
+        // Use Plesk's context to build the redirect URI properly
+        $client->setRedirectUri(pm_Context::getBaseUrl() . 'oauth2callback.php');
+        
+        $client->addScope(\Google\Service\Drive::DRIVE);
+        $client->setAccessType('offline');
+        $client->setPrompt('consent'); // Force to refresh token
+        
+        // If we have a saved token, set it
         $token = $this->getToken();
         if (!empty($token)) {
             $client->setAccessToken($token);
             
-            // Refresh token if needed
+            // If token is expired, try to refresh it
             if ($client->isAccessTokenExpired()) {
-                $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
-                $this->saveToken($client->getAccessToken());
+                try {
+                    $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+                    $this->saveToken($client->getAccessToken());
+                } catch (\Exception $e) {
+                    // Failed to refresh token, user needs to reconnect
+                    $this->clearToken();
+                }
             }
         }
         

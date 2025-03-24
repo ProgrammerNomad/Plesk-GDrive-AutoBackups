@@ -1,8 +1,11 @@
+#!/usr/bin/env php
 <?php
-//#!/usr/bin/env php
+// Make sure this is executable with the shebang at the top
+
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 use PleskExt\GDriveAutoBackups\BackupController;
+use pm_Context;
 
 try {
     $backupController = new BackupController();

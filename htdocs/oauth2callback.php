@@ -15,16 +15,16 @@ try {
         // Store the token for future use
         $apiController->saveToken($token);
         
-        // Redirect back to the extension page
-        header('Location: index.php?auth=success');
+        // Redirect back to the extension page using Plesk's base URL
+        header('Location: ' . pm_Context::getBaseUrl() . 'index.php?auth=success');
         exit;
     } else {
         // No code provided, redirect to the extension page with an error
-        header('Location: index.php?auth=error&message=' . urlencode('No authorization code was provided'));
+        header('Location: ' . pm_Context::getBaseUrl() . 'index.php?auth=error&message=' . urlencode('No authorization code was provided'));
         exit;
     }
 } catch (Exception $e) {
     // Handle any exceptions that occur during the OAuth flow
-    header('Location: index.php?auth=error&message=' . urlencode($e->getMessage()));
+    header('Location: ' . pm_Context::getBaseUrl() . 'index.php?auth=error&message=' . urlencode($e->getMessage()));
     exit;
 }

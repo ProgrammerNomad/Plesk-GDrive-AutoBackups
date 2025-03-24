@@ -3,6 +3,7 @@ require_once '../plib/vendor/autoload.php';
 
 use PleskExt\GDriveAutoBackups\ApiController;
 use PleskExt\GDriveAutoBackups\BackupController;
+use pm_Context;
 
 header('Content-Type: application/json');
 

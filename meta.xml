@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- filepath: c:\xampp\htdocs\Plesk-GDrive-AutoBackups\meta.xml -->
 <module>
     <id>plesk-gdrive-autobackups</id>
     <name>GDrive AutoBackups</name>
-    <description>Automatically back up your Plesk server data to Google Drive. This extension provides a secure, automated solution for backing up your websites, databases, and email to your Google Drive account.</description>
+    <description>Automatically back up your Plesk server data to Google Drive</description>
     <version>1.0.0</version>
     <release>1</release>
     <vendor>ProgrammerNomad</vendor>

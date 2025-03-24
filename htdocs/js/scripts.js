@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         statusDiv.textContent = "Saving API credentials...";
         
-        fetch('api.php?action=saveCredentials', {
+        fetch(getBaseUrl() + 'api.php?action=saveCredentials', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
     connectBtn.addEventListener('click', function() {
         statusDiv.textContent = "Connecting to Google Drive...";
         
-        fetch('api.php?action=getAuthUrl')
+        fetch(getBaseUrl() + 'api.php?action=getAuthUrl')
             .then(response => response.json())
             .then(data => {
                 if (data.authUrl) {
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         statusDiv.textContent = "Saving backup settings...";
         
-        fetch('api.php?action=saveSettings', {
+        fetch(getBaseUrl() + 'api.php?action=saveSettings', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Load API credentials
     function loadApiCredentials() {
-        fetch('api.php?action=getCredentials')
+        fetch(getBaseUrl() + 'api.php?action=getCredentials')
             .then(response => response.json())
             .then(data => {
                 if (data.credentials) {
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Load backup settings
     function loadBackupSettings() {
-        fetch('api.php?action=getSettings')
+        fetch(getBaseUrl() + 'api.php?action=getSettings')
             .then(response => response.json())
             .then(data => {
                 if (data.settings) {
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadLogs() {
         const logsDiv = document.getElementById('logs');
         
-        fetch('api.php?action=getLogs')
+        fetch(getBaseUrl() + 'api.php?action=getLogs')
             .then(response => response.json())
             .then(data => {
                 if (data.logs && Array.isArray(data.logs)) {
@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
         statusDiv.textContent = "Starting backup...";
         statusDiv.className = "status-info";
         
-        fetch('api.php?action=runBackup', {
+        fetch(getBaseUrl() + 'api.php?action=runBackup', {
             method: 'POST'
         })
         .then(response => response.json())
@@ -300,3 +300,11 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
 });
+
+// Add this function to get the base URL of your extension
+function getBaseUrl() {
+    // Extract the base URL from the current path
+    const path = window.location.pathname;
+    const baseUrlMatch = path.match(/(.*\/)[^\/]+$/);
+    return baseUrlMatch ? baseUrlMatch[1] : '/';
+}

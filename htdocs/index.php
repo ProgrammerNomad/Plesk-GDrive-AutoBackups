@@ -55,7 +55,11 @@
     <div class="form-group">
       <label for="redirectUri">Redirect URI:</label>
       <input type="text" id="redirectUri" name="redirectUri" class="form-control" 
-             value="<?php echo 'https://' . $_SERVER['HTTP_HOST'] . '/modules/plesk-gdrive-autobackups/oauth2callback.php'; ?>" readonly>
+             value="<?php 
+    // Use Plesk's API to get the proper URL
+    require_once('../plib/vendor/autoload.php');
+    echo pm_Context::getBaseUrl() . 'oauth2callback.php';
+?>" readonly>
       <small class="form-text text-muted">Add this URL to your Google Developer Console as an authorized redirect URI</small>
     </div>
 
