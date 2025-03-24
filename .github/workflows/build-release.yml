@@ -30,10 +30,12 @@ jobs:
             echo "VERSION=dev-build-$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
           fi
           
-      - name: Display build information
+      - name: Display repository structure
         run: |
           echo "Building Plesk GDrive AutoBackups Extension"
           echo "Version: ${{ steps.get_version.outputs.VERSION }}"
+          echo "Repository structure:"
+          ls -la
           
       - name: Install Composer dependencies
         run: |
@@ -41,7 +43,13 @@ jobs:
           
       - name: Make scripts executable
         run: |
-          chmod +x plib/scripts/backup.php
+          # Check if scripts directory exists first
+          if [ -d "plib/scripts" ]; then
+            find plib/scripts -name "*.php" -exec chmod +x {} \;
+            echo "Made script files executable"
+          else
+            echo "Scripts directory not found, skipping permissions"
+          fi
           
       - name: Create directory structure
         run: |
@@ -50,15 +58,50 @@ jobs:
       - name: Copy files to build directory
         run: |
           # Core files and directories
-          cp -r htdocs build/plesk-gdrive-autobackups/
-          cp -r plib build/plesk-gdrive-autobackups/
+          if [ -d "htdocs" ]; then
+            cp -r htdocs build/plesk-gdrive-autobackups/
+          else
+            mkdir -p build/plesk-gdrive-autobackups/htdocs
+            echo "Created empty htdocs directory"
+          fi
+          
+          if [ -d "plib" ]; then
+            cp -r plib build/plesk-gdrive-autobackups/
+          else
+            mkdir -p build/plesk-gdrive-autobackups/plib
+            echo "Created empty plib directory"
+          fi
+          
           cp meta.xml build/plesk-gdrive-autobackups/
           cp LICENSE build/plesk-gdrive-autobackups/ || echo "LICENSE file not found, skipping"
           
+          # Copy subdirectories that might exist in the nested structure
+          if [ -d "Plesk-GDrive-AutoBackups/htdocs" ]; then
+            cp -r Plesk-GDrive-AutoBackups/htdocs/* build/plesk-gdrive-autobackups/htdocs/
+            echo "Copied nested htdocs content"
+          fi
+          
+          if [ -d "Plesk-GDrive-AutoBackups/plib" ]; then
+            cp -r Plesk-GDrive-AutoBackups/plib/* build/plesk-gdrive-autobackups/plib/
+            echo "Copied nested plib content"
+          fi
+          
           # Ensure we don't include development files in the build
-          rm -rf build/plesk-gdrive-autobackups/plib/vendor/*/tests
-          rm -rf build/plesk-gdrive-autobackups/plib/vendor/*/docs
-          rm -rf build/plesk-gdrive-autobackups/plib/vendor/*/examples
+          if [ -d "build/plesk-gdrive-autobackups/plib/vendor" ]; then
+            find build/plesk-gdrive-autobackups/plib/vendor -type d -name "tests" -exec rm -rf {} + 2>/dev/null || true
+            find build/plesk-gdrive-autobackups/plib/vendor -type d -name "docs" -exec rm -rf {} + 2>/dev/null || true
+            find build/plesk-gdrive-autobackups/plib/vendor -type d -name "examples" -exec rm -rf {} + 2>/dev/null || true
+            echo "Cleaned up vendor directories"
+          fi
+          
+      - name: Update version in meta.xml
+        run: |
+          if [ -f "build/plesk-gdrive-autobackups/meta.xml" ]; then
+            sed -i "s/<version>.*<\/version>/<version>${{ steps.get_version.outputs.VERSION }}<\/version>/" build/plesk-gdrive-autobackups/meta.xml
+            echo "Updated version in meta.xml to ${{ steps.get_version.outputs.VERSION }}"
+          else
+            echo "meta.xml not found in build directory"
+          fi
           
       - name: Create ZIP package
         run: |
