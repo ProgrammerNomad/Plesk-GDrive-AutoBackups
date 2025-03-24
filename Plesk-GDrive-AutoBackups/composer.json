@@ -1,6 +1,6 @@
 {
     "require": {
-      "google/apiclient": "^2.0",
+      "google/apiclient": "^2.18",
       "plesk/api-php-lib": "^2.1"
     },
     "config": {
