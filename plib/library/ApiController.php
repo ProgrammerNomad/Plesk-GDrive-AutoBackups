@@ -21,8 +21,14 @@ class ApiController
     public function saveCredentials($clientId, $clientSecret, $redirectUri)
     {
         // Validate inputs
-        if (empty($clientId) || empty($clientSecret) || empty($redirectUri)) {
-            throw new \Exception('All API credential fields are required');
+        if (empty($clientId) || !is_string($clientId)) {
+            throw new \Exception('Invalid Client ID');
+        }
+        if (empty($clientSecret) || !is_string($clientSecret)) {
+            throw new \Exception('Invalid Client Secret');
+        }
+        if (empty($redirectUri) || !filter_var($redirectUri, FILTER_VALIDATE_URL)) {
+            throw new \Exception('Invalid Redirect URI');
         }
         
         // Store credentials securely

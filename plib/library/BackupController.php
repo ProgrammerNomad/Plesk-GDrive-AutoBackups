@@ -70,7 +70,11 @@ class BackupController
         // Remove any existing backup tasks
         foreach ($scheduledTasks as $task) {
             if (strpos($task['command'], $scriptPath) !== false) {
-                (new \pm_Scheduler())->removeTask($task['id']);
+                try {
+                    (new \pm_Scheduler())->removeTask($task['id']);
+                } catch (\Exception $e) {
+                    \pm_Log::err("Failed to remove old task: " . $e->getMessage());
+                }
             }
         }
         
@@ -88,7 +92,11 @@ class BackupController
                 break;
         }
         
-        (new \pm_Scheduler())->addCronJob($schedule, $scriptPath);
+        try {
+            (new \pm_Scheduler())->addCronJob($schedule, $scriptPath);
+        } catch (\Exception $e) {
+            \pm_Log::err("Failed to add cron job: " . $e->getMessage());
+        }
         
         return true;
     }
@@ -306,27 +314,8 @@ class BackupController
      */
     private function logBackupEvent($message, $level = 'INFO')
     {
-        $timestamp = date('Y-m-d H:i:s');
-        $logEntry = json_encode([
-            'timestamp' => $timestamp,
-            'level' => $level,
-            'message' => $message
-        ]);
-        
-        // Get existing logs
-        $logs = $this->pm->get('backup_logs', '[]');
-        $logsArray = json_decode($logs, true);
-        
-        // Add new log entry
-        array_unshift($logsArray, json_decode($logEntry, true));
-        
-        // Keep only the last 100 log entries
-        if (count($logsArray) > 100) {
-            $logsArray = array_slice($logsArray, 0, 100);
-        }
-        
-        // Save updated logs
-        $this->pm->set('backup_logs', json_encode($logsArray));
+        $logMessage = '[' . date('Y-m-d H:i:s') . '] ' . $level . ': ' . $message;
+        \pm_Log::info($logMessage); // Use Plesk's logging
     }
     
     /**

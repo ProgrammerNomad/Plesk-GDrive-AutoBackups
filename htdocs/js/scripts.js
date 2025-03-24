@@ -64,7 +64,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 redirectUri: redirectUri
             })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 statusDiv.textContent = "API credentials saved successfully";
