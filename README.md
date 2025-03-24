@@ -88,7 +88,7 @@ If you see "invalid_client" errors:
 
 ## Support
 
-If you encounter any issues or have questions, please open an issue on the GitHub repository: [https://github.com/ProgrammerNomad/Plesk-GDrive-AutoBackups](https://github.com/ProgrammerNomad/Plesk-GDrive-AutoBackups)
+If you encounter any issues or have questions, please open an issue on the GitHub repository: [https://github.com/ProgrammerNomad/Plesk-GDrive-AutoBackups/issues](https://github.com/ProgrammerNomad/Plesk-GDrive-AutoBackups/issues)
 
 ## Contributing
 
