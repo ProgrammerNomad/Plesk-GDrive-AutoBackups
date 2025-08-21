@@ -1,0 +1,257 @@
+/* GDrive AutoBackups Extension Styles */
+/* Integrates with Plesk's existing UI framework */
+
+.modules-wrapper {
+  padding: 0;
+  margin: 0;
+}
+
+.modules-wrapper h1 {
+  margin-bottom: 20px;
+}
+
+/* Status messages */
+.msg-info {
+  background-color: #d1ecf1;
+  border: 1px solid #bee5eb;
+  color: #0c5460;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.msg-error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.msg-success {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+/* Setup guide */
+.setup-guide {
+  margin-bottom: 30px;
+}
+
+.toggle-button {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.toggle-button:hover {
+  background: #e9ecef;
+}
+
+.setup-guide-content {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.setup-guide-content.hidden {
+  display: none;
+}
+
+.setup-guide-content ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.setup-guide-content li {
+  margin-bottom: 8px;
+}
+
+.code-box {
+  background: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  padding: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  margin: 8px 0;
+  word-break: break-all;
+}
+
+.note {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  color: #856404;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 15px;
+}
+
+/* Form styling to integrate with Plesk */
+.sb-form fieldset {
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.sb-form legend {
+  font-weight: bold;
+  padding: 0 10px;
+  color: #495057;
+}
+
+.f-field {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.f-label {
+  min-width: 150px;
+  margin-right: 15px;
+  padding-top: 5px;
+}
+
+.f-label label {
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.f-value {
+  flex: 1;
+}
+
+.f-text,
+.f-list {
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.f-text:focus,
+.f-list:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.f-list[multiple] {
+  height: 120px;
+}
+
+.f-description {
+  color: #6c757d;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.sb-button {
+  background-color: #007bff;
+  border: 1px solid #007bff;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 10px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.sb-button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.sb-button:disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* Logs section */
+.logs-container {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.log-entry {
+  padding: 5px 0;
+  border-bottom: 1px solid #e9ecef;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+
+.no-logs {
+  color: #6c757d;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .f-field {
+    flex-direction: column;
+  }
+  
+  .f-label {
+    min-width: auto;
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+  
+  .f-text,
+  .f-list {
+    max-width: 100%;
+  }
+}
+
+/* Loading states */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

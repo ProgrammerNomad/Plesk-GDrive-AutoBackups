@@ -12,7 +12,7 @@ class ApiController
     public function __construct()
     {
         // Correct way to instantiate PM_Settings
-        $this->pm = new pm_Settings();
+        $this->pm = pm_Settings::getInstance();
     }
     
     /**
@@ -85,7 +85,12 @@ class ApiController
         $client->setClientSecret($credentials['clientSecret']);
         
         // Use Plesk's context to build the redirect URI properly
-        $client->setRedirectUri(pm_Context::getBaseUrl() . 'oauth2callback.php');
+        $redirectUri = $this->getCredentials()['redirectUri'];
+        if (empty($redirectUri)) {
+            // Fallback to default Plesk URL pattern
+            $redirectUri = pm_Context::getBaseUrl() . 'index.php/index/oauth2callback';
+        }
+        $client->setRedirectUri($redirectUri);
         
         $client->addScope(\Google\Service\Drive::DRIVE);
         $client->setAccessType('offline');
@@ -109,5 +114,14 @@ class ApiController
         }
         
         return $client;
+    }
+    
+    /**
+     * Clear stored access token
+     */
+    public function clearToken()
+    {
+        $this->pm->set('google_access_token', '');
+        return ['success' => true];
     }
 }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<locales>
+    <locale id="en-US">
+        <translation id="extension_title">GDrive AutoBackups</translation>
+        <translation id="page_title">Google Drive Automatic Backups</translation>
+        <translation id="auth_success">Successfully connected to Google Drive!</translation>
+        <translation id="auth_error">Error connecting to Google Drive</translation>
+        <translation id="setup_guide_title">Google Cloud Setup Guide</translation>
+        <translation id="show">Show</translation>
+        <translation id="hide">Hide</translation>
+        <translation id="setup_step_1">Go to Google Cloud Console</translation>
+        <translation id="setup_step_2">Create a new project or select an existing one</translation>
+        <translation id="setup_step_3">Navigate to "APIs &amp; Services" &gt; "Library"</translation>
+        <translation id="setup_step_4">Enable the "Google Drive API"</translation>
+        <translation id="setup_step_5">Go to "APIs &amp; Services" &gt; "Credentials"</translation>
+        <translation id="setup_step_6">Click "Create Credentials" &gt; "OAuth Client ID"</translation>
+        <translation id="setup_step_7">Choose "Web application" as the application type</translation>
+        <translation id="setup_step_8">Set a name for your client (e.g., "Plesk GDrive AutoBackups")</translation>
+        <translation id="setup_step_9">Under "Authorized redirect URIs", add this exact URL:</translation>
+        <translation id="setup_step_10">Click "Create" to generate your Client ID and Client Secret</translation>
+        <translation id="setup_step_11">Copy the Client ID and Client Secret into the form below</translation>
+        <translation id="note">Note</translation>
+        <translation id="redirect_uri_note">Make sure the redirect URI exactly matches what you enter in Google Cloud Console, including the protocol (http/https) and any trailing slashes.</translation>
+        <translation id="api_config_title">Google Drive API Configuration</translation>
+        <translation id="client_id">Client ID</translation>
+        <translation id="client_secret">Client Secret</translation>
+        <translation id="redirect_uri">Redirect URI</translation>
+        <translation id="redirect_uri_description">Add this URL to your Google Developer Console as an authorized redirect URI</translation>
+        <translation id="save_credentials">Save Credentials</translation>
+        <translation id="connect_google_drive">Connect to Google Drive</translation>
+        <translation id="backup_settings_title">Backup Settings</translation>
+        <translation id="backup_directories">Directories to Backup</translation>
+        <translation id="all_domains">All Domains</translation>
+        <translation id="mysql_databases">MySQL Databases</translation>
+        <translation id="backup_frequency">Backup Frequency</translation>
+        <translation id="daily">Daily</translation>
+        <translation id="weekly">Weekly</translation>
+        <translation id="monthly">Monthly</translation>
+        <translation id="retention_count">Number of Backups to Keep</translation>
+        <translation id="save_settings">Save Settings</translation>
+        <translation id="run_backup_now">Run Backup Now</translation>
+        <translation id="backup_logs_title">Backup Logs</translation>
+        <translation id="no_logs_available">No logs available</translation>
+        <translation id="credentials_required">Client ID and Client Secret are required</translation>
+        <translation id="saving_credentials">Saving API credentials...</translation>
+        <translation id="credentials_saved">API credentials saved successfully</translation>
+        <translation id="error_saving_credentials">Error saving API credentials</translation>
+        <translation id="unknown_error">Unknown error</translation>
+        <translation id="connecting_google_drive">Connecting to Google Drive...</translation>
+        <translation id="auth_window_opened">A new window has opened. Please log in to your Google account and grant access.</translation>
+        <translation id="error_getting_auth_url">Error getting authorization URL</translation>
+    </locale>
+</locales>

@@ -1,0 +1,293 @@
+<?php
+// Copyright 2025. ProgrammerNomad. All rights reserved.
+?>
+
+<div class="modules-wrapper">
+    <h1><?= $this->escape($this->lmsg('extension_title')) ?></h1>
+
+    <div id="status">
+        <?php if ($this->authStatus == 'success'): ?>
+            <div class="msg-info">
+                <?= $this->escape($this->lmsg('auth_success')) ?>
+            </div>
+        <?php elseif ($this->authStatus == 'error'): ?>
+            <div class="msg-error">
+                <?= $this->escape($this->lmsg('auth_error')) ?>: <?= $this->escape($this->authMessage) ?>
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <div class="setup-guide">
+        <h2>
+            <?= $this->escape($this->lmsg('setup_guide_title')) ?>
+            <button id="toggleSetupGuide" class="toggle-button"><?= $this->escape($this->lmsg('show')) ?></button>
+        </h2>
+        
+        <div id="setupGuideContent" class="setup-guide-content hidden">
+            <ol>
+                <li><?= $this->escape($this->lmsg('setup_step_1')) ?></li>
+                <li><?= $this->escape($this->lmsg('setup_step_2')) ?></li>
+                <li><?= $this->escape($this->lmsg('setup_step_3')) ?></li>
+                <li><?= $this->escape($this->lmsg('setup_step_4')) ?></li>
+                <li><?= $this->escape($this->lmsg('setup_step_5')) ?></li>
+                <li><?= $this->escape($this->lmsg('setup_step_6')) ?></li>
+                <li><?= $this->escape($this->lmsg('setup_step_7')) ?></li>
+                <li><?= $this->escape($this->lmsg('setup_step_8')) ?></li>
+                <li>
+                    <?= $this->escape($this->lmsg('setup_step_9')) ?>
+                    <div class="code-box">
+                        <?= $this->escape($this->url(['action' => 'oauth2callback'], null, true)) ?>
+                    </div>
+                </li>
+                <li><?= $this->escape($this->lmsg('setup_step_10')) ?></li>
+                <li><?= $this->escape($this->lmsg('setup_step_11')) ?></li>
+            </ol>
+            <div class="note">
+                <strong><?= $this->escape($this->lmsg('note')) ?>:</strong> 
+                <?= $this->escape($this->lmsg('redirect_uri_note')) ?>
+            </div>
+        </div>
+    </div>
+
+    <form id="configForm" class="sb-form">
+        <fieldset>
+            <legend><?= $this->escape($this->lmsg('api_config_title')) ?></legend>
+            
+            <div class="f-field">
+                <div class="f-label">
+                    <label for="clientId"><?= $this->escape($this->lmsg('client_id')) ?>:</label>
+                </div>
+                <div class="f-value">
+                    <input type="text" id="clientId" name="clientId" class="f-text" 
+                           value="<?= $this->escape($this->credentials['clientId']) ?>" required>
+                </div>
+            </div>
+            
+            <div class="f-field">
+                <div class="f-label">
+                    <label for="clientSecret"><?= $this->escape($this->lmsg('client_secret')) ?>:</label>
+                </div>
+                <div class="f-value">
+                    <input type="password" id="clientSecret" name="clientSecret" class="f-text" 
+                           value="<?= $this->escape($this->credentials['clientSecret']) ?>" required>
+                </div>
+            </div>
+            
+            <div class="f-field">
+                <div class="f-label">
+                    <label for="redirectUri"><?= $this->escape($this->lmsg('redirect_uri')) ?>:</label>
+                </div>
+                <div class="f-value">
+                    <input type="text" id="redirectUri" name="redirectUri" class="f-text" 
+                           value="<?= $this->escape($this->url(['action' => 'oauth2callback'], null, true)) ?>" readonly>
+                    <div class="f-description">
+                        <?= $this->escape($this->lmsg('redirect_uri_description')) ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="f-field">
+                <div class="f-value">
+                    <button type="button" id="saveApiCredentials" class="sb-button">
+                        <?= $this->escape($this->lmsg('save_credentials')) ?>
+                    </button>
+                    <button type="button" id="connectBtn" class="sb-button" disabled>
+                        <?= $this->escape($this->lmsg('connect_google_drive')) ?>
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend><?= $this->escape($this->lmsg('backup_settings_title')) ?></legend>
+            
+            <div class="f-field">
+                <div class="f-label">
+                    <label for="backupDirs"><?= $this->escape($this->lmsg('backup_directories')) ?>:</label>
+                </div>
+                <div class="f-value">
+                    <select id="backupDirs" name="backupDirs[]" multiple class="f-list" size="5">
+                        <option value="/var/www/vhosts" 
+                                <?= in_array('/var/www/vhosts', $this->settings['backupDirs']) ? 'selected' : '' ?>>
+                            <?= $this->escape($this->lmsg('all_domains')) ?>
+                        </option>
+                        <option value="/var/lib/mysql" 
+                                <?= in_array('/var/lib/mysql', $this->settings['backupDirs']) ? 'selected' : '' ?>>
+                            <?= $this->escape($this->lmsg('mysql_databases')) ?>
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="f-field">
+                <div class="f-label">
+                    <label for="backupFreq"><?= $this->escape($this->lmsg('backup_frequency')) ?>:</label>
+                </div>
+                <div class="f-value">
+                    <select id="backupFreq" name="backupFreq" class="f-list">
+                        <option value="daily" <?= $this->settings['backupFreq'] == 'daily' ? 'selected' : '' ?>>
+                            <?= $this->escape($this->lmsg('daily')) ?>
+                        </option>
+                        <option value="weekly" <?= $this->settings['backupFreq'] == 'weekly' ? 'selected' : '' ?>>
+                            <?= $this->escape($this->lmsg('weekly')) ?>
+                        </option>
+                        <option value="monthly" <?= $this->settings['backupFreq'] == 'monthly' ? 'selected' : '' ?>>
+                            <?= $this->escape($this->lmsg('monthly')) ?>
+                        </option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="f-field">
+                <div class="f-label">
+                    <label for="retentionCount"><?= $this->escape($this->lmsg('retention_count')) ?>:</label>
+                </div>
+                <div class="f-value">
+                    <input type="number" id="retentionCount" name="retentionCount" class="f-text" 
+                           min="1" max="100" value="<?= $this->escape($this->settings['retentionCount']) ?>">
+                </div>
+            </div>
+
+            <div class="f-field">
+                <div class="f-value">
+                    <button type="submit" id="saveSettings" class="sb-button">
+                        <?= $this->escape($this->lmsg('save_settings')) ?>
+                    </button>
+                    <button type="button" id="runBackup" class="sb-button">
+                        <?= $this->escape($this->lmsg('run_backup_now')) ?>
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+    <fieldset>
+        <legend><?= $this->escape($this->lmsg('backup_logs_title')) ?></legend>
+        <div id="logs">
+            <?php if (!empty($this->logs)): ?>
+                <div class="logs-container">
+                    <?php foreach ($this->logs as $log): ?>
+                        <div class="log-entry">
+                            <?= $this->escape($log) ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <div class="no-logs">
+                    <?= $this->escape($this->lmsg('no_logs_available')) ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </fieldset>
+</div>
+
+<script>
+// Use proper Plesk JavaScript patterns
+(function() {
+    // Extension initialization
+    function initGDriveAutoBackups() {
+        const statusDiv = document.getElementById('status');
+        const connectBtn = document.getElementById('connectBtn');
+        const saveApiCredentialsBtn = document.getElementById('saveApiCredentials');
+        const configForm = document.getElementById('configForm');
+        const clientIdInput = document.getElementById('clientId');
+        const clientSecretInput = document.getElementById('clientSecret');
+        
+        // Setup guide toggle functionality
+        const toggleSetupGuideBtn = document.getElementById('toggleSetupGuide');
+        const setupGuideContent = document.getElementById('setupGuideContent');
+        
+        if (toggleSetupGuideBtn) {
+            toggleSetupGuideBtn.addEventListener('click', function() {
+                if (setupGuideContent.classList.contains('hidden')) {
+                    setupGuideContent.classList.remove('hidden');
+                    toggleSetupGuideBtn.textContent = '<?= $this->escape($this->lmsg('hide')) ?>';
+                } else {
+                    setupGuideContent.classList.add('hidden');
+                    toggleSetupGuideBtn.textContent = '<?= $this->escape($this->lmsg('show')) ?>';
+                }
+            });
+        }
+        
+        // Check if credentials are saved to enable connect button
+        if (clientIdInput.value.trim() && clientSecretInput.value.trim()) {
+            connectBtn.disabled = false;
+        }
+        
+        // Save API credentials
+        saveApiCredentialsBtn.addEventListener('click', function() {
+            const clientId = clientIdInput.value.trim();
+            const clientSecret = clientSecretInput.value.trim();
+            const redirectUri = document.getElementById('redirectUri').value.trim();
+            
+            if (!clientId || !clientSecret) {
+                showStatus("<?= $this->escape($this->lmsg('credentials_required')) ?>", 'error');
+                return;
+            }
+            
+            showStatus("<?= $this->escape($this->lmsg('saving_credentials')) ?>", 'info');
+            
+            // Use Plesk's AJAX pattern
+            fetch(window.location.pathname + '?action=save-credentials', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    clientId: clientId,
+                    clientSecret: clientSecret,
+                    redirectUri: redirectUri
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showStatus("<?= $this->escape($this->lmsg('credentials_saved')) ?>", 'success');
+                    connectBtn.disabled = false;
+                } else {
+                    showStatus("<?= $this->escape($this->lmsg('error_saving_credentials')) ?>: " + (data.error || "<?= $this->escape($this->lmsg('unknown_error')) ?>"), 'error');
+                }
+            })
+            .catch(error => {
+                showStatus("<?= $this->escape($this->lmsg('error_saving_credentials')) ?>: " + error.message, 'error');
+            });
+        });
+        
+        // Connect to Google Drive
+        connectBtn.addEventListener('click', function() {
+            showStatus("<?= $this->escape($this->lmsg('connecting_google_drive')) ?>", 'info');
+            
+            fetch(window.location.pathname + '?action=get-auth-url', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.authUrl) {
+                    window.open(data.authUrl, '_blank');
+                    showStatus("<?= $this->escape($this->lmsg('auth_window_opened')) ?>", 'info');
+                } else {
+                    showStatus("<?= $this->escape($this->lmsg('error_getting_auth_url')) ?>: " + (data.error || "<?= $this->escape($this->lmsg('unknown_error')) ?>"), 'error');
+                }
+            })
+            .catch(error => {
+                showStatus("<?= $this->escape($this->lmsg('error_getting_auth_url')) ?>: " + error.message, 'error');
+            });
+        });
+        
+        function showStatus(message, type) {
+            statusDiv.innerHTML = '<div class="msg-' + type + '">' + message + '</div>';
+        }
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initGDriveAutoBackups);
+    } else {
+        initGDriveAutoBackups();
+    }
+})();
+</script>

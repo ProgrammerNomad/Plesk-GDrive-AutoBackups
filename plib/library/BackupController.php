@@ -8,7 +8,7 @@ class BackupController
     
     public function __construct()
     {
-        $this->pm = new \pm_Settings();
+        $this->pm = pm_Settings::getInstance();
         $this->apiController = new ApiController();
     }
     
@@ -136,12 +136,28 @@ class BackupController
                 $this->logBackupEvent("Backing up directory: {$dir}");
                 $tarFile = "{$tempDir}/" . basename($dir) . ".tar.gz";
                 
-                // Use escapeshellarg to prevent command injection
-                $srcDir = escapeshellarg(dirname($dir));
-                $srcBase = escapeshellarg(basename($dir));
-                $tarFile = escapeshellarg($tarFile);
+                // Check if we're on Windows or Linux
+                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    // Windows - use 7zip or PowerShell compression
+                    $dirName = basename($dir);
+                    $tarFile = "{$tempDir}\\{$dirName}.zip";
+                    
+                    // Use PowerShell to create compressed archive
+                    $powershellCmd = sprintf(
+                        'powershell.exe -Command "Compress-Archive -Path %s -DestinationPath %s -Force"',
+                        escapeshellarg($dir),
+                        escapeshellarg($tarFile)
+                    );
+                    
+                    exec($powershellCmd, $output, $returnVar);
+                } else {
+                    // Linux - use tar
+                    $srcDir = escapeshellarg(dirname($dir));
+                    $srcBase = escapeshellarg(basename($dir));
+                    $tarFile = escapeshellarg($tarFile);
 
-                exec("tar -czf {$tarFile} -C {$srcDir} {$srcBase}", $output, $returnVar);
+                    exec("tar -czf {$tarFile} -C {$srcDir} {$srcBase}", $output, $returnVar);
+                }
                 
                 if ($returnVar !== 0) {
                     throw new \Exception("Failed to create backup archive for {$dir}");

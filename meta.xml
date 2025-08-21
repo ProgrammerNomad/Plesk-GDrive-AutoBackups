@@ -69,18 +69,10 @@
             <admin>
                 <title>GDrive AutoBackups</title>
                 <description>Configure Google Drive automatic backups</description>
-                <url>index.php</url>
+                <url>/admin/extension/index/id/plesk-gdrive-autobackups</url>
                 <icon>icon.png</icon>
             </admin>
         </navigation>
-        
-        <!-- Add Remote Storage integration -->
-        <remote-storage>
-            <title>Google Drive</title>
-            <description>Back up to Google Drive</description>
-            <url>index.php</url>
-            <icon>icon.png</icon>
-        </remote-storage>
     </ui>
     
     <!-- CLI commands -->
