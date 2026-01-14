@@ -65,7 +65,16 @@
     <ui>
         <!-- Register the extension in navigation menus -->
         <navigation>
-            <!-- In Admin Panel -->
+            <!-- In Backup Manager as Remote Storage Provider -->
+            <backup-manager>
+                <remote-storage-provider>
+                    <title>Google Drive</title>
+                    <description>Store backups on Google Drive</description>
+                    <icon>icon.png</icon>
+                </remote-storage-provider>
+            </backup-manager>
+            
+            <!-- Also keep in Admin Panel for advanced settings -->
             <admin>
                 <title>GDrive AutoBackups</title>
                 <description>Configure Google Drive automatic backups</description>
@@ -74,6 +83,11 @@
             </admin>
         </navigation>
     </ui>
+    
+    <!-- Hook registrations -->
+    <hooks>
+        <hook class="Modules_PleskGdriveAutobackups_RemoteStorageProvider" />
+    </hooks>
     
     <!-- CLI commands -->
     <cli>
