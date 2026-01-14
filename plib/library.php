@@ -15,6 +15,18 @@ if (!class_exists('pm_Settings')) {
 // Load vendor dependencies
 require_once __DIR__ . '/vendor/autoload.php';
 
+// Load the Backup Transport hook (registers Google Drive as backup destination)
+require_once __DIR__ . '/hooks/Backup/Transport.php';
+
+// Load configuration defaults hook
+require_once __DIR__ . '/hooks/ConfigDefaults.php';
+
+// Load content include hook (for UI integration)
+require_once __DIR__ . '/hooks/ContentInclude.php';
+
+// Load custom info hook (for status display)
+require_once __DIR__ . '/hooks/CustomInfo.php';
+
 /**
  * Main extension class
  */

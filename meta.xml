@@ -2,102 +2,12 @@
 <module>
     <id>plesk-gdrive-autobackups</id>
     <name>GDrive AutoBackups</name>
-    <description>Automatically back up your Plesk server data to Google Drive</description>
+    <description>Back up and restore your Plesk server data to Google Drive storage</description>
+    <category>backup</category>
+    <category>clouds</category>
+    <url>https://github.com/ProgrammerNomad/Plesk-GDrive-AutoBackups</url>
     <version>1.0.0</version>
     <release>1</release>
     <vendor>ProgrammerNomad</vendor>
-    <url>https://github.com/ProgrammerNomad/Plesk-GDrive-AutoBackups</url>
-    <plesk_min_version>18.0.0</plesk_min_version>
-    
-    <!-- Long description for catalog -->
-    <long-description>
-        <![CDATA[
-        <h2>Secure Your Plesk Server Data in Google Drive</h2>
-        
-        <p>GDrive AutoBackups provides a seamless way to automatically back up your Plesk server data directly to Google Drive. With simple setup and flexible configuration options, you can ensure your websites, databases, and email are protected in the cloud.</p>
-        
-        <h3>Key Features</h3>
-        <ul>
-            <li><strong>Simple OAuth Integration</strong> - Secure connection to your Google Drive</li>
-            <li><strong>Scheduled Backups</strong> - Configure daily, weekly, or monthly backup schedules</li>
-            <li><strong>Selective Backups</strong> - Choose specific directories and databases to back up</li>
-            <li><strong>Retention Policies</strong> - Automatically manage backup history and free up space</li>
-            <li><strong>Manual Backups</strong> - Run on-demand backups with a single click</li>
-            <li><strong>Comprehensive Logs</strong> - Detailed activity tracking and error reporting</li>
-            <li><strong>Secure Authentication</strong> - OAuth 2.0 for secure Google Drive access</li>
-        </ul>
-        
-        <h3>Easy Setup Process</h3>
-        <ol>
-            <li>Create your Google Cloud Project and enable the Drive API</li>
-            <li>Enter your Google API credentials</li>
-            <li>Connect to your Google Drive account</li>
-            <li>Select directories to back up</li>
-            <li>Set your backup schedule and retention policy</li>
-        </ol>
-        
-        <p>GDrive AutoBackups brings enterprise-level backup capabilities to your Plesk server without the complexity or cost.</p>
-        ]]>
-    </long-description>
-    
-    <!-- Screenshots for catalog -->
-    <screenshots>
-        <screenshot>screenshots/screenshot-1-dashboard.png</screenshot>
-        <screenshot>screenshots/screenshot-2-configuration.png</screenshot>
-        <screenshot>screenshots/screenshot-3-backup-logs.png</screenshot>
-        <screenshot>screenshots/screenshot-4-google-drive.png</screenshot>
-    </screenshots>
-    
-    <!-- Add features list for catalog -->
-    <features>
-        <feature>OAuth 2.0 Google Drive integration</feature>
-        <feature>Automatic scheduled backups</feature>
-        <feature>Selective directory backups</feature>
-        <feature>Backup history management</feature>
-        <feature>Detailed backup logs</feature>
-        <feature>Manual backup option</feature>
-    </features>
-    
-    <!-- Category for navigation -->
-    <category>backup</category>
-    
-    <!-- UI configuration -->
-    <ui>
-        <!-- Register the extension in navigation menus -->
-        <navigation>
-            <!-- In Admin Panel -->
-            <admin>
-                <title>GDrive AutoBackups</title>
-                <description>Configure Google Drive automatic backups</description>
-                <url>/admin/extension/index/id/plesk-gdrive-autobackups</url>
-                <icon>icon.png</icon>
-            </admin>
-        </navigation>
-    </ui>
-    
-    <!-- CLI commands -->
-    <cli>
-        <commands>
-            <command required="false">
-                <path>plib/scripts/backup.php</path>
-            </command>
-        </commands>
-    </cli>
-    
-    <!-- Required permissions -->
-    <permissions>
-        <permission name="pm_Backup" />
-        <permission name="pm_Scheduler" />
-    </permissions>
-    
-    <!-- Required PHP version and extensions -->
-    <requirements>
-        <php>
-            <min_version>7.3.0</min_version>
-            <extensions>
-                <ext name="json" />
-                <ext name="curl" />
-            </extensions>
-        </php>
-    </requirements>
+    <plesk_min_version>18.0.50</plesk_min_version>
 </module>
