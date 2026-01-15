@@ -27,7 +27,7 @@ class Modules_PleskGdriveAutobackups_Backup_Transport extends pm_Hook_Backup_Tra
      */
     public function getName()
     {
-        return 'Google Drive';
+        return 'GDrive AutoBackups';
     }
 
     /**
@@ -49,7 +49,7 @@ class Modules_PleskGdriveAutobackups_Backup_Transport extends pm_Hook_Backup_Tra
      */
     public function getId()
     {
-        return 'google-drive';
+        return 'gdrive-autobackups';
     }
 
     /**

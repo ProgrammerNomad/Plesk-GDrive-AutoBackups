@@ -67,7 +67,17 @@ Write-Host ""
 Write-Host "[5/6] Creating zip archive..." -ForegroundColor Yellow
 
 try {
-    Compress-Archive -Path $TempDir -DestinationPath $Output -CompressionLevel Optimal -Force -ErrorAction Stop
+    # Get all items in temp directory
+    Push-Location $TempDir
+    $FilesToZip = @(Get-Item *)
+    Pop-Location
+    
+    # Compress using UpdateArchive to add items at root
+    if ($FilesToZip.Count -gt 0) {
+        Compress-Archive -Path $FilesToZip -DestinationPath $Output -CompressionLevel Optimal -Force -ErrorAction Stop
+    } else {
+        throw "No files found to compress"
+    }
     Write-Host "      Archive created successfully" -ForegroundColor Green
 } catch {
     Write-Host "[ERROR] Failed to create zip: $_" -ForegroundColor Red

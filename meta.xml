@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <module>
     <id>plesk-gdrive-autobackups</id>
     <name>GDrive AutoBackups</name>
@@ -10,4 +10,14 @@
     <release>1</release>
     <vendor>ProgrammerNomad</vendor>
     <plesk_min_version>18.0.50</plesk_min_version>
+    <ui>
+        <navigation>
+            <admin>
+                <title>GDrive AutoBackups</title>
+                <description>Configure Google Drive automatic backups</description>
+                <url>/modules/plesk-gdrive-autobackups/</url>
+                <icon>/images/icon.png</icon>
+            </admin>
+        </navigation>
+    </ui>
 </module>
